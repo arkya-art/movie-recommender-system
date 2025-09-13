@@ -1,4 +1,4 @@
-# 🎬 Movie Recommender System
+# Hybrid Batch and Stream Processing Movie Recommender System
 
 A hybrid batch + real-time movie recommender built with **TensorFlow**, **Kafka**, **Flink**, and **Flask**. The project integrates offline Neural Collaborative Filtering (NCF) model training with real-time user interaction streaming using Apache Kafka and Apache Flink. Offline training ensures robust and accurate recommendations, while the streaming pipeline continuously captures user clicks and preferences, enabling the system to adapt and improve over time. A Flask-based REST API exposes endpoints for fetching recommendations and logging user feedback, and a React frontend provides a simple interface for users to interact with the system. The entire setup is containerized using Docker for reproducibility and easy deployment.
 
@@ -61,7 +61,7 @@ The system architecture is designed as a hybrid recommendation pipeline that int
 
 * **Scalable Design**: The architecture is modular and can scale horizontally — the training pipeline, API service, Kafka brokers, and Flink jobs can all be scaled independently.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 <p align="left">
   <img src="https://www.vectorlogo.zone/logos/python/python-icon.svg" alt="Python" width="50" height="50"/>
@@ -69,7 +69,7 @@ The system architecture is designed as a hybrid recommendation pipeline that int
   <img src="https://www.vectorlogo.zone/logos/docker/docker-icon.svg" alt="Docker" width="50" height="50"/>
   <img src="https://www.vectorlogo.zone/logos/apache_kafka/apache_kafka-icon.svg" alt="Kafka" width="50" height="50"/>
   <img src="https://www.vectorlogo.zone/logos/apache_zookeeper/apache_zookeeper-icon.svg" alt="Zookeeper" width="50" height="50"/>
-  <img src="https://www.vectorlogo.zone/logos/apache_flink/apache_flink-icon.svg" alt="Flink" width="50" height="50"/>
+  <img src="https://flink.apache.org/img/logo/svg/color_black.svg" alt="Flink" width="50" height="50"/>
   <img src="https://www.vectorlogo.zone/logos/reactjs/reactjs-icon.svg" alt="React" width="50" height="50"/>
 </p>
 
