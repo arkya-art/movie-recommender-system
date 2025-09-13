@@ -1,5 +1,9 @@
+
+# Project data
 /data/
 
-/frontend/node_modules/
-/frontend/build/
 
+# Frontend Files
+# /frontend/node_modules/
+# /frontend/build/
+# /frontend/.env.local
