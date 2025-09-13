@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: zookeeper:3.8.1
+    container_name: my-zookeeper
+    ports:
+      - "2181:2181"
+    restart: unless-stopped
+
+  kafka:
+    image: confluentinc/cp-kafka:7.7.1
+    container_name: my-kafka
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      
+      KAFKA_BROKER_ID: "1"
+      
+      KAFKA_ZOOKEEPER_CONNECT: "my-zookeeper:2181"
+      
+      KAFKA_LISTENERS: "PLAINTEXT://0.0.0.0:9092"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://localhost:9092"
+     
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
+    restart: unless-stopped

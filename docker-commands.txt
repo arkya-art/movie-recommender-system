@@ -1,0 +1,31 @@
+Run Zookeeper:
+
+sudo docker run -d --name my-zookeeper \
+  -p 2181:2181 \
+  -e ALLOW_ANONYMOUS_LOGIN=yes \
+  bitnami/zookeeper:latest
+  
+Run Kafka:
+
+sudo docker run -d --name my-kafka \
+  -p 9092:9092 \
+  --link my-zookeeper:zookeeper \
+  -e KAFKA_BROKER_ID=1 \
+  -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 \
+  -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 \
+  -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092 \
+  -e KAFKA_CFG_PROCESS_ROLES=broker \
+  -e KAFKA_CFG_NODE_ID=1 \
+  -e KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT \
+  bitnami/kafka:latest
+
+
+Remove and Recreate the Kafka Container
+
+sudo docker stop my-zookeeper
+sudo docker rm my-zookeeper
+
+
+sudo docker stop my-kafka
+sudo docker rm my-kafka
+
