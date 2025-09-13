@@ -1,7 +1,7 @@
 # 🎬 Movie Recommender System
 
 A hybrid batch + real-time movie recommender built with **TensorFlow**, **Kafka**, **Flink**, and **Flask**. The project integrates offline Neural Collaborative Filtering (NCF) model training with real-time user interaction streaming using Apache Kafka and Apache Flink. Offline training ensures robust and accurate recommendations, while the streaming pipeline continuously captures user clicks and preferences, enabling the system to adapt and improve over time. A Flask-based REST API exposes endpoints for fetching recommendations and logging user feedback, and a React frontend provides a simple interface for users to interact with the system. The entire setup is containerized using Docker for reproducibility and easy deployment.
----
+
 
 ![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-orange)
@@ -24,7 +24,7 @@ A hybrid batch + real-time movie recommender built with **TensorFlow**, **Kafka*
 * [Future Work](#future-work)
 * [Contributors](#contributors)
 
-## 🏗️ System Architecture
+## System Architecture
 
 ![Recommender System Architecture](assets/system_architecture.png)
 
