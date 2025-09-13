@@ -15,7 +15,7 @@ A hybrid batch + real-time movie recommender built with **TensorFlow**, **Kafka*
   <img src="https://www.vectorlogo.zone/logos/tensorflow/tensorflow-icon.svg" alt="TensorFlow" width="50" height="50"/>
   <img src="https://www.vectorlogo.zone/logos/docker/docker-icon.svg" alt="Docker" width="50" height="50"/>
   <img src="https://www.vectorlogo.zone/logos/apache_kafka/apache_kafka-icon.svg" alt="Kafka" width="50" height="50"/>
-  <img src="https://upload.vectorlogo.zone/logos/apache_flink/images/717d859a-4eae-4752-bf4d-cefa5cd80af7.html" alt="Flink" width="50" height="50"/>
+  <img src="https://flink.apache.org/img/logo/svg/color_black.svg" alt="Flink" width="50" height="50"/>
   <img src="https://www.vectorlogo.zone/logos/apache_zookeeper/apache_zookeeper-icon.svg" alt="Zookeeper" width="50" height="50"/>
   <img src="https://www.vectorlogo.zone/logos/reactjs/reactjs-icon.svg" alt="React" width="50" height="50"/>
 </p>
@@ -25,10 +25,9 @@ A hybrid batch + real-time movie recommender built with **TensorFlow**, **Kafka*
 * [System Architecture](#system-architecture)
 * [Features](#features)
 * [Tech Stack](#tech-stack)
-* [Installation](#installation)
-* [Usage](#usage)
 * [Project Structure](#project-structure)
-* [Performance](#performance)
+* [Data](#data)
+* [Installation](#installation)
 * [Future Work](#future-work)
 * [Contributors](#contributors)
 
@@ -61,4 +60,212 @@ The system architecture is designed as a hybrid recommendation pipeline that int
 * **Frontend Integration**: A simple **React.js application** serves as the UI for login and displaying recommendations, connecting seamlessly to the Flask API.
 
 * **Scalable Design**: The architecture is modular and can scale horizontally — the training pipeline, API service, Kafka brokers, and Flink jobs can all be scaled independently.
+
+## 🛠️ Tech Stack
+
+<p align="left">
+  <img src="https://www.vectorlogo.zone/logos/python/python-icon.svg" alt="Python" width="50" height="50"/>
+  <img src="https://www.vectorlogo.zone/logos/tensorflow/tensorflow-icon.svg" alt="TensorFlow" width="50" height="50"/>
+  <img src="https://www.vectorlogo.zone/logos/docker/docker-icon.svg" alt="Docker" width="50" height="50"/>
+  <img src="https://www.vectorlogo.zone/logos/apache_kafka/apache_kafka-icon.svg" alt="Kafka" width="50" height="50"/>
+  <img src="https://www.vectorlogo.zone/logos/apache_zookeeper/apache_zookeeper-icon.svg" alt="Zookeeper" width="50" height="50"/>
+  <img src="https://www.vectorlogo.zone/logos/apache_flink/apache_flink-icon.svg" alt="Flink" width="50" height="50"/>
+  <img src="https://www.vectorlogo.zone/logos/reactjs/reactjs-icon.svg" alt="React" width="50" height="50"/>
+</p>
+
+* **Programming Language**: Python (3.9+)
+* **Machine Learning**: TensorFlow/Keras, Scikit-learn
+* **Data Processing**: Pandas, NumPy, Joblib
+* **Web Framework**: Flask (REST API)
+* **Frontend**: React.js
+* **Event Streaming**: Apache Kafka + Zookeeper
+* **Stream Processing**: Apache Flink (PyFlink)
+* **Containerization**: Docker, Docker Compose
+* **Visualization**: Matplotlib
+
+## 📂 Project Structure
+
+```
+movie-recommender-system/
+│
+├── assets/                     # Images, architecture diagrams, documentation assets
+│
+├── frontend/                   # React frontend for login and movie recommendations
+│   ├── App.jsx                 # Main React component
+│   ├── api.js                  # API calls to Flask backend
+│
+├── kafka-stack/                # Kafka + Zookeeper setup
+│   ├── docker-compose.yml      # Docker setup for Kafka and Zookeeper
+│
+├── model/                      # Trained models and artifacts
+│   ├── ncf_model.keras
+│   ├── neural_cf_model.keras
+│   ├── neural_cf_residual.keras
+│   ├── user2idx.pkl
+│   ├── movie2idx.pkl
+│   ├── user_scaler.pkl
+│   ├── movie_scaler.pkl
+│   ├── training_history.png
+│   ├── ncf_training_history.png
+│
+├── src/                        # Core Python source files
+│   ├── data_preprocessor.py    # Preprocesses MovieLens dataset into feature sets
+│   ├── train_model.py          # Baseline NCF model training
+│   ├── train_model_v2.py       # Advanced NCF model with additional features
+│   ├── model_service_ncf.py    # Flask API for serving recommendations
+│   ├── flink_job.py            # Flink job for consuming Kafka events
+│
+├── docker-commands.txt         # Manual Docker commands reference
+├── requirements.txt            # Python dependencies
+├── .gitignore                  # Git ignore rules
+└── README.md                   # Project documentation
+```
+
+## Data
+
+This project uses the **MovieLens dataset**, a popular benchmark dataset for recommendation systems.
+
+* **Raw Data (in `data/raw/`)**:
+
+  * `movies.csv` → Movie metadata (movieId, title, genres)
+  * `ratings.csv` → User ratings (userId, movieId, rating, timestamp)
+* **Processed Data (in `data/processed/`)**:
+
+  * `movie_features.csv` → Engineered features for movies (release year, average rating, genres one-hot encoding)
+  * `user_features.csv` → Aggregated user features (average ratings per genre, user averages)
+
+The dataset can be downloaded from the following link:
+➡️ [Download MovieLens Dataset](https://drive.google.com/drive/folders/1006X53vGZTGSDGaRKqxluUbT1sMP8EUU?usp=sharing)
+
+This dataset is used for both **offline training** of the Neural Collaborative Filtering (NCF) model and for **real-time evaluation** with user interactions.
+
+
+## ⚙️ Installation
+
+Follow these steps to set up the project locally. This guide assumes you have **Git**, **Python 3.9+**, and **Docker** installed.
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/arkya-art/movie-recommender-system.git
+cd movie-recommender-system
+```
+
+### 2. Create a Virtual Environment & Install Dependencies
+
+```bash
+python3 -m venv venv
+source venv/bin/activate   # Linux/Mac
+venv\Scripts\activate      # Windows
+
+pip install -r requirements.txt
+```
+
+### 3. Install Docker
+
+* Download and install Docker from [Docker official site](https://docs.docker.com/get-docker/).
+* Verify installation:
+
+```bash
+docker --version
+```
+
+### 4. Start Kafka & Zookeeper with Docker Compose
+
+The repository includes a `docker-compose.yml` file to run Kafka and Zookeeper.
+
+```bash
+docker-compose up -d
+```
+
+* Check if containers are running:
+
+```bash
+docker ps
+```
+
+You should see two containers: `my-zookeeper` and `my-kafka` running.
+
+### 5. Preprocess Data (Optional)
+
+If you want to **train the NCF model from scratch**:
+
+```bash
+python data_preprocessor.py
+python train_model_v2.py
+```
+
+If you only want to run the system with the pre-trained model, skip this step. A trained model is already included in the `model/` folder for inference.
+
+### 6. Start the Flask API Service
+
+This service loads the trained NCF model and exposes endpoints.
+
+```bash
+python model_service_ncf.py
+```
+
+API will start at: [http://localhost:5002](http://localhost:5002)
+
+### 7. Run the Flink Streaming Job
+
+Make sure you have PyFlink installed. Then run:
+
+```bash
+python flink_job.py
+```
+
+This job will consume user click events from Kafka and store them into CSV files.
+
+### 8. Interact with the System
+
+* **Get Recommendations:**
+
+```bash
+curl http://localhost:5002/predict/1
+```
+
+* **Send User Interaction (Click):**
+
+```bash
+curl -X POST http://localhost:5002/click \
+     -H "Content-Type: application/json" \
+     -d '{"userId": 1, "movieId": 10, "timestamp": 1694582374}'
+```
+
+* **Check API Status:**
+
+```bash
+curl http://localhost:5002/debug
+```
+
+### 9. Frontend (Optional)
+
+Navigate into the `frontend/` directory and run:
+
+```bash
+npm install
+npm start
+```
+
+This launches a React-based UI to interact with the recommender system visually.
+
+## Future Work
+
+While the current system demonstrates the integration of batch training and real-time processing, several enhancements can make it more powerful and production-ready
+
+* **Advanced Stream Processing**: Extend the Flink job to include stateful processing, session tracking, and trend analysis for adaptive recommendations.
+* **Online Model Updates**: Implement online learning or incremental retraining so that the NCF model adapts quickly to new interactions.
+* **Better Cold-Start Solutions**: Incorporate content-based features (genres, metadata, demographics) to handle new users/items more effectively.
+* **Experimentation Framework**: Add A/B testing for evaluating different recommendation strategies and configurations.
+* **User Interface Improvements**: Build a more interactive and feature-rich frontend with personalized dashboards.
+* **Database Integration**: Replace CSV-based storage with scalable databases (e.g., PostgreSQL, MongoDB, or Cassandra) for persistence and querying.
+* **Deployment Automation**: Use Kubernetes or cloud services to orchestrate containers, manage scaling, and streamline CI/CD pipelines.
+
+---
+
+## Contributors
+
+* **Arkya Bagchi** 
+* **Raskar Varun** 
 
